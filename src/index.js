@@ -57,7 +57,7 @@ app.post ("/usuarios", async (req, resp) => {
 //  GET - PARA VISUALIZAR USUÁRIOS JÁ CADASTRADOS
 app.get("/usuarios", (req, resp) => {
     
-    if (usuarios.length < 0) {
+    if (usuarios.length < 1) {
         return resp.status(404).json("Nnenhum usuário cadastrado!");
     }
 
