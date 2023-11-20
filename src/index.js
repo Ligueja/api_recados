@@ -40,7 +40,7 @@ app.post ("/usuarios", async (req, res) => {
 
     bcrypt.hash(senha, 6, (err, hash) => {
         if (err) {
-           return res.status(500).json("Erro ao criar usuário!")
+           return res.status(500).send("Erro ao criar usuário!")
         }
         else {
             const usuario = {
@@ -56,8 +56,6 @@ app.post ("/usuarios", async (req, res) => {
             console.log(usuario);
         }
     })
-
-    
 
     return res.status(201).json("Usuário criado com sucesso!");
 
