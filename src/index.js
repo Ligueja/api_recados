@@ -1,13 +1,14 @@
-import express from "express";
+import express, { json } from "express";
 import bcrypt, { hash } from "bcrypt";
 import { randomUUID } from "node:crypto";
+import { join } from "node:path";
 
 const app = express();
 
 app.use(express.json());
 
 app.get("/", (req, res) => {
-  return res.json("OK");
+  return res.json("OK, servidor rodando");
 });
 
 const usuarios = [];
@@ -86,5 +87,45 @@ app.post("/usuarios/login", (req, res) => {
     }
   });
 });
+
+
+// CRUD DE RECADOS 
+// POST - Crias recado através do ID do usuário
+app.post('/usuarios/:id/recados', async (req, res) => {
+    const body = req.body;
+    const usuarioId = req.params.id;
+
+    const usuario = usuarios.find((user) => user.id === usuarioId);
+
+    if (!usuario) {
+      return res.status(404).json('Usuário não encontrado!');
+    }
+
+    const novoRecado = {
+      id: randomUUID(),
+      titulo: body.titulo,
+      descricao: body.descricao
+    };
+
+    usuario.recados.push(novoRecado);
+    recados.push(novoRecado);
+
+    return res.status(201).json("Recado criado com sucesso!");
+})
+
+// GET - ler recado através do id do usuário
+
+app.get("/usuarios/:id/recados", (req, res) => {
+  const usuarioId = req.params.id;
+
+  const usuario = usuarios.find((user) => user.id === usuarioId);
+
+  if (!usuario) {
+    return res.status(404).json("Usuário não encontrado!")
+  } 
+
+  return res.status(201).json(usuario.recados);
+})
+
 
 app.listen(8080, () => console.log("Servidor iniciado - porta 8080"));
