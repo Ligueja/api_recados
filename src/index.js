@@ -15,6 +15,7 @@ const usuarios = [];
 const recados = [];
 
 // POST - PARA CRIAR USUÁRIO COM RECADO "FALSO"
+
 app.post("/usuarios", async (req, res) => {
   const body = req.body;
 
@@ -60,6 +61,7 @@ app.post("/usuarios", async (req, res) => {
 });
 
 //  GET - PARA VISUALIZAR USUÁRIOS JÁ CADASTRADOS
+
 app.get("/usuarios", (req, res) => {
   if (usuarios.length < 1) {
     return res.status(404).json("Nnenhum usuário cadastrado!");
@@ -88,30 +90,31 @@ app.post("/usuarios/login", (req, res) => {
   });
 });
 
+// CRUD DE RECADOS
 
-// CRUD DE RECADOS 
 // POST - Crias recado através do ID do usuário
-app.post('/usuarios/:id/recados', async (req, res) => {
-    const body = req.body;
-    const usuarioId = req.params.id;
 
-    const usuario = usuarios.find((user) => user.id === usuarioId);
+app.post("/usuarios/:id/recados", async (req, res) => {
+  const body = req.body;
+  const usuarioId = req.params.id;
 
-    if (!usuario) {
-      return res.status(404).json('Usuário não encontrado!');
-    }
+  const usuario = usuarios.find((user) => user.id === usuarioId);
 
-    const novoRecado = {
-      id: randomUUID(),
-      titulo: body.titulo,
-      descricao: body.descricao
-    };
+  if (!usuario) {
+    return res.status(404).json("Usuário não encontrado!");
+  }
 
-    usuario.recados.push(novoRecado);
-    recados.push(novoRecado);
+  const novoRecado = {
+    id: randomUUID(),
+    titulo: body.titulo,
+    descricao: body.descricao,
+  };
 
-    return res.status(201).json("Recado criado com sucesso!");
-})
+  usuario.recados.push(novoRecado);
+  recados.push(novoRecado);
+
+  return res.status(201).json("Recado criado com sucesso!");
+});
 
 // GET - ler recado através do id do usuário
 
@@ -121,11 +124,60 @@ app.get("/usuarios/:id/recados", (req, res) => {
   const usuario = usuarios.find((user) => user.id === usuarioId);
 
   if (!usuario) {
-    return res.status(404).json("Usuário não encontrado!")
-  } 
+    return res.status(404).json("Usuário não encontrado!");
+  }
 
   return res.status(201).json(usuario.recados);
-})
+});
 
+// PUT - editar cadastro através do id do usuário e do id do recado
+
+app.put("/usuarios/:userId/recados/:recadoId", (req, res) => {
+  const { titulo, descricao } = req.body;
+  const usuarioId = req.params.userId;
+  const recadoId = req.params.recadoId;
+
+  const usuario = usuarios.find((user) => user.id === usuarioId);
+
+  if (!usuario) {
+    return res.status(404).json("Usuário não encontrado!");
+  }
+
+  const recado = usuario.recados.find((recado) => recado.id === recadoId);
+
+  if (!recado) {
+    return res.status(404).json("Recado não encontrado!");
+  }
+
+  recado.titulo = titulo;
+  recado.descricao = descricao;
+
+  return res.status(201).json("Recado atualizado com sucesso!");
+});
+
+// DELETE - deletar recado usando o id do usuário e id do recado
+
+app.delete("/usuarios/:userId/recados/:recadoId", (req, res) => {
+  const usuarioId = req.params.userId;
+  const recadoId = req.params.recadoId;
+
+  const usuario = usuarios.find((user) => user.id === usuarioId);
+
+  if (!usuario) {
+    return res.status(404).json("Usuário não encontrado!");
+  }
+
+  const recadoIndex = usuario.recados.findIndex(
+    (recado) => recado.id === recadoId
+  );
+
+  if (recadoIndex === -1) {
+    return res.status(404).json("Recado não encontrado!");
+  }
+
+  usuario.recados.splice(recadoIndex, 1);
+
+  return res.status(201).json("Recado apagado com sucesso!");
+});
 
 app.listen(8080, () => console.log("Servidor iniciado - porta 8080"));
