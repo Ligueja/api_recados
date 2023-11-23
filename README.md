@@ -3,7 +3,7 @@
 ## Criação de contas/usuários, com login e um CRUD (create, read, update e delete) de recados.
 
 #### Regras:
-- Não pode ter mais de um usúário com o mesmo e-mail;
+- Não pode ter mais de um usuário com o mesmo e-mail;
 - O login deve ser feito com e-mail e senha;
 - Cada recado deve ser de um único usuário.
 
