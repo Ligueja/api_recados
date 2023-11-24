@@ -1,7 +1,7 @@
 import express, { json } from "express";
 import bcrypt, { hash } from "bcrypt";
 import { randomUUID } from "crypto";
-import { join } from "node:path";
+import { join } from "path";
 
 const app = express();
 
