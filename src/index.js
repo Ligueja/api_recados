@@ -11,7 +11,21 @@ app.get("/", (req, res) => {
   return res.json("OK, servidor rodando");
 });
 
-const usuarios = [];
+const usuarios = [
+  {
+    "id": "ab33a6f0-8724-49df-acfa-22602e22e40d",
+    "nome": "Fernanda",
+    "email": "ligue@gmail.com",
+    "senha": "$2b$06$lkglIJK7.Hc3Kt0g4/TJ7u2DHW9G5VCwD0gimwPchWYBuGhS64wYm",
+    "recados": [
+      {
+        "id": "7c2b24fd-bb14-4c46-a984-647c237613fe",
+        "titulo": "Titulo do Novo recado",
+        "descricao": "Descrição do Novo recado"
+    }
+    ]
+}
+];
 const recados = [];
 
 // POST - PARA CRIAR USUÁRIO COM RECADO "FALSO"
