@@ -1,4 +1,5 @@
 import express, { json } from "express";
+import cors from "cors";
 import bcrypt, { hash } from "bcrypt";
 import { randomUUID } from "crypto";
 import { join } from "path";
@@ -6,6 +7,15 @@ import { join } from "path";
 const app = express();
 
 app.use(express.json());
+
+app.use(
+  cors({
+    origin: 'http://127.0.0.1:5501',
+    // Allow follow-up middleware to override this CORS for options
+    preflightContinue: true,
+  }),
+);
+
 
 app.get("/", (req, res) => {
   return res.json("OK, servidor rodando");
