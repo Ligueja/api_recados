@@ -10,7 +10,7 @@ app.use(express.json());
 
 app.use(
   cors({
-    origin: 'http://127.0.0.1:5501',
+    origin: 'http://127.0.0.1:5502',
     // Allow follow-up middleware to override this CORS for options
     preflightContinue: true,
   }),
@@ -102,7 +102,7 @@ app.post("/usuarios/login", (req, res) => {
   const usuario = usuarios.find((usuario) => usuario.email === login.email);
 
   if (!usuario) {
-    return res.status(402).json("Usauário não cadastrado");
+    return res.status(404).json("Usauário não cadastrado");
   }
 
   bcrypt.compare(login.senha, usuario.senha, function (err, result) {
